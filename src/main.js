@@ -1,3 +1,14 @@
+/*
+Name: Daniel Aughenbaugh (daughenb@ucsc.edu)
+Project Title:
+Date:
+Time to complete:
+*
+Points breakdown:
+*
+Sources citation:
+*/
+
 // game configuration
 let config = {
     type: Phaser.CANVAS,
