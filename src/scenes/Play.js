@@ -38,6 +38,20 @@ class Play extends Phaser.Scene {
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
+        //pointer down input
+        this.input.on('pointerdown', function (pointer) {
+            if(pointer.leftButtonDown()) {
+                mouse1 = true;
+            }
+        }, this);
+        //pointer up input
+        this.input.on('pointerup', function (pointer) {
+            if(pointer.event.button === 0) {
+                mouse1 = false;
+            }
+        });
+    
+
         // animation config
         this.anims.create({
             key: 'explode',
