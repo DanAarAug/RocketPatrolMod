@@ -27,4 +27,4 @@ let starSpeed = 4;
 // reserve keyboard bindings
 let keyF, keyR, keyLEFT, keyRIGHT;
 // reserve mouse bindings
-let mouse1;
+let mouse1, mouseX, mouseY;

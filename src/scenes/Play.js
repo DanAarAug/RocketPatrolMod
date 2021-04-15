@@ -50,6 +50,11 @@ class Play extends Phaser.Scene {
                 mouse1 = false;
             }
         });
+        //pointer x and y
+        this.input.on('pointermove', function (pointer) {
+            mouseX = pointer.x;
+            mouseY = pointer.y;
+        }, this);
     
 
         // animation config
