@@ -5,8 +5,11 @@ Date:
 Time to complete:
 *
 Points breakdown:
+    Mouse control for player movement and mouse click to fire (20)
 *
 Sources citation:
+Personal help from: Colin O'Rourke (csorourk@ucsc.edu)
+Minecraft animation assets: https://minecraft.fandom.com/wiki/Animation
 */
 
 // game configuration

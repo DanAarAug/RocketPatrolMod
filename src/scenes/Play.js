@@ -8,8 +8,9 @@ class Play extends Phaser.Scene {
         this.load.image('rocket', './assets/rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('starfield', './assets/starfield.png');
-        // load spritesheet
+        // load spritesheets
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+        this.load.spritesheet('bee', './assets/minecraftBee.png', {frameWidth: 150, frameHeight: 150, startFrame: 0, endFrame: 59});
     }
 
     create() {
@@ -31,6 +32,9 @@ class Play extends Phaser.Scene {
         this.ship01 = new Spaceship(this, game.config.width + borderUISize * 6, borderUISize * 4, 'spaceship', 0, 30).setOrigin(0, 0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0, 0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 +borderPadding*4, 'spaceship', 0, 10).setOrigin(0, 0);
+
+        // add bee(s)
+        this.bee01 = new Bee(this, game.config.width + borderUISize * 6, borderUISize * 4, 'bee', 0, 30).setOrigin(0, 0);
 
         // define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -57,12 +61,22 @@ class Play extends Phaser.Scene {
         }, this);
     
 
-        // animation config
+        // animations config
         this.anims.create({
             key: 'explode',
             frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9, first: 0}),
             frameRate: 30
         });
+        // this.anims.create({
+        //     key: 'beeFly',
+        //     frames: this.anims.generateFrameNumbers('bee', { start: 0, end: 59, first: 0}),
+        //     frameRate: 30,
+        //     repeat: 1
+        // });
+        // this.bee01.anims.play('beeFly');
+        // this.bee01.on('animationcomplete', () => {    // callback after anim completes
+        //     this.bee01.anims.play('beeFly');            
+        //   });
 
         // initialize score
         this.p1Score = 0;
@@ -110,6 +124,8 @@ class Play extends Phaser.Scene {
             this.ship01.update();           // update spaceships (x3)
             this.ship02.update();
             this.ship03.update();
+
+            this.bee01.update();    // update bee(s)
         } 
 
         // check collisions
