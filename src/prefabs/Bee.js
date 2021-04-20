@@ -8,8 +8,8 @@ class Bee extends Phaser.GameObjects.Sprite {
         this.anims.create({
             key: 'beeFly',
             frames: this.anims.generateFrameNumbers('bee', { start: 0, end: 59, first: 0}),
-            frameRate: 30,
-            repeat: -1
+            frameRate: 60,
+            repeat: -1,
         });
         this.anims.play('beeFly');
     }

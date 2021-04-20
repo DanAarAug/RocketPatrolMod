@@ -34,7 +34,8 @@ class Play extends Phaser.Scene {
         this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 +borderPadding*4, 'spaceship', 0, 10).setOrigin(0, 0);
 
         // add bee(s)
-        this.bee01 = new Bee(this, game.config.width + borderUISize * 6, borderUISize * 4, 'bee', 0, 30).setOrigin(0, 0);
+        this.bee01 = new Bee(this, game.config.width, borderUISize * 4, 'bee', 0, 30).setOrigin(0, 0).setScale(0.4);
+        this.bee02 = new Bee(this, game.config.width + borderUISize * 6, borderUISize * 4, 'bee', 0, 30).setOrigin(0, 0).setScale(0.4);
 
         // define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -82,7 +83,7 @@ class Play extends Phaser.Scene {
         this.p1Score = 0;
           // display score
         let scoreConfig = {
-            fontFamily: 'Courier',
+            fontFamily: 'minecraft1',
             fontSize: '28px',
             backgroundColor: '#F3B141',
             color: '#843605',
@@ -126,6 +127,7 @@ class Play extends Phaser.Scene {
             this.ship03.update();
 
             this.bee01.update();    // update bee(s)
+            this.bee02.update();
         } 
 
         // check collisions
@@ -141,6 +143,15 @@ class Play extends Phaser.Scene {
             this.p1Rocket.reset();
             this.shipExplode(this.ship01);
         }
+        //check bee collisions
+        if (this.checkBeeCollision(this.p1Rocket, this.bee01)) {
+            this.p1Rocket.reset();
+            this.beeExplode(this.bee01);
+        }
+        if (this.checkBeeCollision(this.p1Rocket, this.bee02)) {
+            this.p1Rocket.reset();
+            this.beeExplode(this.bee02);
+        }
     }
     checkCollision(rocket, ship) {
         if(rocket.x < ship.x + ship.width && rocket.x + rocket.width > ship.x && rocket.y < ship.y + ship.height && rocket.height + rocket.y > ship.y) {
@@ -149,6 +160,14 @@ class Play extends Phaser.Scene {
             return false;
         }
     }
+    checkBeeCollision(rocket, bee) {
+        if(rocket.x < bee.x + bee.width*0.25 && rocket.x + rocket.width > bee.x - bee.width*0.25 && rocket.y < bee.y + bee.height*0.25 && rocket.height + rocket.y > bee.y - bee.height*0.25) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     shipExplode(ship) {
         //temporarily hide ship
         ship.alpha = 0;
@@ -162,6 +181,22 @@ class Play extends Phaser.Scene {
         });
           // score add and repaint
         this.p1Score += ship.points;
+        this.scoreLeft.text = this.p1Score;
+        this.sound.play('sfx_explosion');
+      }
+      beeExplode(bee) {
+        //temporarily hide bee
+        bee.alpha = 0;
+        // create explosion sprite at bee's position
+        let boom = this.add.sprite(bee.x, bee.y, 'explosion').setOrigin(0, 0);
+        boom.anims.play('explode');             // play explode animation
+        boom.on('animationcomplete', () => {    // callback after anim completes
+          bee.reset();                         // reset bee position
+          bee.alpha = 1;                       // make bee visible again
+          boom.destroy();                       // remove explosion sprite
+        });
+          // score add and repaint
+        this.p1Score += bee.points;
         this.scoreLeft.text = this.p1Score;
         this.sound.play('sfx_explosion');
       }

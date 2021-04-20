@@ -10,6 +10,7 @@ Points breakdown:
 Sources citation:
 Personal help from: Colin O'Rourke (csorourk@ucsc.edu)
 Minecraft animation assets: https://minecraft.fandom.com/wiki/Animation
+Minecraft font: https://www.dafont.com/minecrafter.font - - - loader solution from https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3
 */
 
 // game configuration
@@ -31,3 +32,12 @@ let starSpeed = 4;
 let keyF, keyR, keyLEFT, keyRIGHT;
 // reserve mouse bindings
 let mouse1, mouseX, mouseY;
+
+function loadFont(name, url) {
+    var newFont = new FontFace(name, `url(${url})`);
+    newFont.load().then(function (loaded) {
+        document.fonts.add(loaded);
+    }).catch(function (error) {
+        return error;
+    });
+}
