@@ -16,8 +16,8 @@ Minecraft font: https://www.dafont.com/minecrafter.font - - - loader solution fr
 // game configuration
 let config = {
     type: Phaser.CANVAS,
-    width: 640,
-    height: 480,
+    width: 480,
+    height: 640,
     scene: [ Menu, Play ]
 }
 

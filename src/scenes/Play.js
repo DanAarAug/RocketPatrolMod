@@ -29,13 +29,22 @@ class Play extends Phaser.Scene {
         this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
 
         // add spaceship (x3)
-        this.ship01 = new Spaceship(this, game.config.width + borderUISize * 6, borderUISize * 4, 'spaceship', 0, 30).setOrigin(0, 0);
-        this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0, 0);
-        this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 +borderPadding*4, 'spaceship', 0, 10).setOrigin(0, 0);
+        // this.ship01 = new Spaceship(this, game.config.width + borderUISize * 6, borderUISize * 4, 'spaceship', 0, 30).setOrigin(0, 0);
+        // this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0, 0);
+        // this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 +borderPadding*4, 'spaceship', 0, 10).setOrigin(0, 0);
 
+        //set scale for sprites
+        this.beeScale = 0.4;
         // add bee(s)
-        this.bee01 = new Bee(this, game.config.width, borderUISize * 4, 'bee', 0, 30).setOrigin(0, 0).setScale(0.4);
-        this.bee02 = new Bee(this, game.config.width + borderUISize * 6, borderUISize * 4, 'bee', 0, 30).setOrigin(0, 0).setScale(0.4);
+        this.bee01 = new Bee(this, game.config.width, borderUISize * 7, 'bee', 0, 30).setOrigin(0, 0).setScale(this.beeScale);
+        this.bee02 = new Bee(this, game.config.width + borderUISize * 6, borderUISize * 4, 'bee', 0, 30).setOrigin(0, 0).setScale(this.beeScale);
+        let bee01bounds = this.bee01.getBounds();
+        //console.log(bee01bounds);
+        this.rect1 = this.add.rectangle(bee01bounds.x, bee01bounds.y, bee01bounds.width, bee01bounds.height, 0xFF0000).setOrigin(0, 0);
+        this.rect1.isFilled = false;
+        this.rect1.isStroked = true;
+        this.rect1.setStrokeStyle(2, 0xFF0000, 1);
+        //console.log(this.rect1);
 
         // define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -87,7 +96,7 @@ class Play extends Phaser.Scene {
             fontSize: '28px',
             backgroundColor: '#F3B141',
             color: '#843605',
-            align: 'right',
+            align: 'center',
             padding: {
             top: 5,
             bottom: 5,
@@ -103,12 +112,13 @@ class Play extends Phaser.Scene {
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart\nor ← for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
     }
 
     update() {
+        this.rect1.x = this.bee01.x;
         // check key input for restart
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
@@ -122,27 +132,27 @@ class Play extends Phaser.Scene {
 
         if (!this.gameOver) {               
             this.p1Rocket.update();         // update rocket sprite
-            this.ship01.update();           // update spaceships (x3)
-            this.ship02.update();
-            this.ship03.update();
+            // this.ship01.update();           // update spaceships (x3)
+            // this.ship02.update();
+            // this.ship03.update();
 
             this.bee01.update();    // update bee(s)
             this.bee02.update();
         } 
 
         // check collisions
-        if(this.checkCollision(this.p1Rocket, this.ship03)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship03);   
-        }
-        if (this.checkCollision(this.p1Rocket, this.ship02)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship02);
-        }
-        if (this.checkCollision(this.p1Rocket, this.ship01)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship01);
-        }
+        // if(this.checkCollision(this.p1Rocket, this.ship03)) {
+        //     this.p1Rocket.reset();
+        //     this.shipExplode(this.ship03);   
+        // }
+        // if (this.checkCollision(this.p1Rocket, this.ship02)) {
+        //     this.p1Rocket.reset();
+        //     this.shipExplode(this.ship02);
+        // }
+        // if (this.checkCollision(this.p1Rocket, this.ship01)) {
+        //     this.p1Rocket.reset();
+        //     this.shipExplode(this.ship01);
+        // }
         //check bee collisions
         if (this.checkBeeCollision(this.p1Rocket, this.bee01)) {
             this.p1Rocket.reset();
@@ -161,7 +171,7 @@ class Play extends Phaser.Scene {
         }
     }
     checkBeeCollision(rocket, bee) {
-        if(rocket.x < bee.x + bee.width*0.25 && rocket.x + rocket.width > bee.x - bee.width*0.25 && rocket.y < bee.y + bee.height*0.25 && rocket.height + rocket.y > bee.y - bee.height*0.25) {
+        if(rocket.x < bee.x + bee.width*this.beeScale && rocket.x + rocket.width/2 > bee.x && rocket.y < bee.y + bee.height*this.beeScale && rocket.height + rocket.y > bee.y) {
             return true;
         } else {
             return false;
