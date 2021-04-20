@@ -5,9 +5,12 @@ class Play extends Phaser.Scene {
 
     preload() {
         // load images/tile sprites
-        this.load.image('rocket', './assets/rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('starfield', './assets/starfield.png');
+        // load egg
+        this.load.image('egg', './assets/egg.png');
+        // load custom minecraft background
+        this.load.image('background', './assets/EggPatrolBG1.png');
         // load spritesheets
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
         this.load.spritesheet('bee', './assets/minecraftBee.png', {frameWidth: 150, frameHeight: 150, startFrame: 0, endFrame: 59});
@@ -25,26 +28,23 @@ class Play extends Phaser.Scene {
         this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
 
-        // add rocket (player 1)
-        this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
-
-        // add spaceship (x3)
-        // this.ship01 = new Spaceship(this, game.config.width + borderUISize * 6, borderUISize * 4, 'spaceship', 0, 30).setOrigin(0, 0);
-        // this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0, 0);
-        // this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 +borderPadding*4, 'spaceship', 0, 10).setOrigin(0, 0);
-
-        //set scale for sprites
+        // set scale for sprites
         this.beeScale = 0.4;
+        this.eggScale = 0.4;
+        // custom minecraft background
+        this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
+
+        // add egg (player 1)
+        this.p1Egg = new Egg(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'egg').setOrigin(0.5, 0).setScale(this.eggScale);
+
         // add bee(s)
-        this.bee01 = new Bee(this, game.config.width, borderUISize * 7, 'bee', 0, 30).setOrigin(0, 0).setScale(this.beeScale);
-        this.bee02 = new Bee(this, game.config.width + borderUISize * 6, borderUISize * 4, 'bee', 0, 30).setOrigin(0, 0).setScale(this.beeScale);
+        this.bee01 = new Bee(this, game.config.width, borderUISize * 4, 'bee', 0, 30).setOrigin(0, 0).setScale(this.beeScale);
+        // bee bounds debug
         let bee01bounds = this.bee01.getBounds();
-        //console.log(bee01bounds);
         this.rect1 = this.add.rectangle(bee01bounds.x, bee01bounds.y, bee01bounds.width, bee01bounds.height, 0xFF0000).setOrigin(0, 0);
         this.rect1.isFilled = false;
         this.rect1.isStroked = true;
         this.rect1.setStrokeStyle(2, 0xFF0000, 1);
-        //console.log(this.rect1);
 
         // define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -90,20 +90,20 @@ class Play extends Phaser.Scene {
 
         // initialize score
         this.p1Score = 0;
-          // display score
+        // display score
         let scoreConfig = {
             fontFamily: 'minecraft1',
-            fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            fontSize: '36px',
+            backgroundColor: '#555555',
+            color: '#FFFFFF',
             align: 'center',
             padding: {
             top: 5,
             bottom: 5,
             },
-            fixedWidth: 100
+            fixedWidth: 120
         }
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 0.5, this.p1Score, scoreConfig);
 
         // GAME OVER flag
         this.gameOver = false;
@@ -121,79 +121,36 @@ class Play extends Phaser.Scene {
         this.rect1.x = this.bee01.x;
         // check key input for restart
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
+            this.sound.play('sfx_MC_select');
             this.scene.restart();
         }
         // check key input for menu
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+            this.sound.play('sfx_MC_select');
             this.scene.start("menuScene");
         }
 
-        this.starfield.tilePositionX -= starSpeed;
+        //this.starfield.tilePositionX -= starSpeed;
 
         if (!this.gameOver) {               
-            this.p1Rocket.update();         // update rocket sprite
-            // this.ship01.update();           // update spaceships (x3)
-            // this.ship02.update();
-            // this.ship03.update();
+            this.p1Egg.update();    // update egg sprite
 
             this.bee01.update();    // update bee(s)
-            this.bee02.update();
         } 
-
-        // check collisions
-        // if(this.checkCollision(this.p1Rocket, this.ship03)) {
-        //     this.p1Rocket.reset();
-        //     this.shipExplode(this.ship03);   
-        // }
-        // if (this.checkCollision(this.p1Rocket, this.ship02)) {
-        //     this.p1Rocket.reset();
-        //     this.shipExplode(this.ship02);
-        // }
-        // if (this.checkCollision(this.p1Rocket, this.ship01)) {
-        //     this.p1Rocket.reset();
-        //     this.shipExplode(this.ship01);
-        // }
         //check bee collisions
-        if (this.checkBeeCollision(this.p1Rocket, this.bee01)) {
-            this.p1Rocket.reset();
+        if (this.checkBeeCollision(this.p1Egg, this.bee01)) {
+            this.p1Egg.reset();
             this.beeExplode(this.bee01);
         }
-        if (this.checkBeeCollision(this.p1Rocket, this.bee02)) {
-            this.p1Rocket.reset();
-            this.beeExplode(this.bee02);
-        }
     }
-    checkCollision(rocket, ship) {
-        if(rocket.x < ship.x + ship.width && rocket.x + rocket.width > ship.x && rocket.y < ship.y + ship.height && rocket.height + rocket.y > ship.y) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    checkBeeCollision(rocket, bee) {
-        if(rocket.x < bee.x + bee.width*this.beeScale && rocket.x + rocket.width/2 > bee.x && rocket.y < bee.y + bee.height*this.beeScale && rocket.height + rocket.y > bee.y) {
+    checkBeeCollision(egg, bee) {
+        if(egg.x < bee.x + bee.width*this.beeScale && egg.x + egg.width*this.eggScale/2 > bee.x && egg.y < bee.y + bee.height*this.beeScale && egg.height*this.eggScale + egg.y > bee.y) {
             return true;
         } else {
             return false;
         }
     }
 
-    shipExplode(ship) {
-        //temporarily hide ship
-        ship.alpha = 0;
-        // create explosion sprite at ship's position
-        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
-        boom.anims.play('explode');             // play explode animation
-        boom.on('animationcomplete', () => {    // callback after anim completes
-          ship.reset();                         // reset ship position
-          ship.alpha = 1;                       // make ship visible again
-          boom.destroy();                       // remove explosion sprite
-        });
-          // score add and repaint
-        this.p1Score += ship.points;
-        this.scoreLeft.text = this.p1Score;
-        this.sound.play('sfx_explosion');
-      }
       beeExplode(bee) {
         //temporarily hide bee
         bee.alpha = 0;
@@ -205,10 +162,10 @@ class Play extends Phaser.Scene {
           bee.alpha = 1;                       // make bee visible again
           boom.destroy();                       // remove explosion sprite
         });
-          // score add and repaint
+        // score add and repaint
         this.p1Score += bee.points;
         this.scoreLeft.text = this.p1Score;
-        this.sound.play('sfx_explosion');
+        this.sound.play('sfx_bee_death');
       }
 
 }
