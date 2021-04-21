@@ -47,7 +47,6 @@ class Menu extends Phaser.Scene {
         menuConfig.fontSize = '24px';
         this.add.text(game.config.width/2, game.config.height/2 + 80, 'Use mouse to move\nAnd click to fire.\nBewAre of bats!', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#555555';
-        menuConfig.color = '#FFFFFF';
         menuConfig.fontSize = '28px';
         let normalButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 120, 'normAl', menuConfig).setOrigin(0.5);
         let hardButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 180, 'hard', menuConfig).setOrigin(0.5);
