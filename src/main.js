@@ -1,6 +1,6 @@
 /*
 Name: Daniel Aughenbaugh (daughenb@ucsc.edu)
-Project Title: Egg Patrol
+Project Title: Minecraft Egg Patrol
 Date: 4-21-21
 Time to complete: 20+ hours
 *
@@ -10,9 +10,9 @@ Points breakdown:
     Redesign the game's artwork, UI, and sound to change its theme/aesthetic (to something other than sci-fi) (60)
 *
 Sources citation:
-    Personal help with debugging from: Colin O'Rourke (csorourk@ucsc.edu)
+    Personal help with debugging from Colin O'Rourke (csorourk@ucsc.edu)
     Minecraft assets (other than custom background): https://minecraft.fandom.com/wiki/
-    Minecraft font: https://www.dafont.com/minecrafter.font - - - loader solution from https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3
+    Minecraft font: https://www.dafont.com/minecrafter.font - - font loader solution from https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3
 */
 
 // game configuration

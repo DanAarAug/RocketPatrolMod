@@ -13,6 +13,7 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_rabbit_death', './assets/rabbit_death.wav');
 
         // load UI images
+        this.load.image('blueBackground', './assets/EggPatrolMenuBG.png');
         this.load.image('border', './assets/EggPatrolBorder.png');
         // load egg
         this.load.image('egg', './assets/egg.png');
@@ -22,32 +23,36 @@ class Menu extends Phaser.Scene {
 
     }
     create() {
+        // blue background
+        this.add.sprite(0, 0, 'blueBackground').setOrigin(0, 0);
         // menu text config
         let menuConfig = {
             fontFamily: 'minecraft1',
-            fontSize: '28px',
-            backgroundColor: '#333333',
+            fontSize: '48px',
+            backgroundColor: '#000000',
             color: '#FFFFFF',
             align: 'center',
             padding: {
-                top: 10,
-                bottom: 10,
+                top: 5,
+                bottom: 5,
+                left: 5,
+                right: 5
             },
-            fixedWidth: 0
+            fixedWidth: 0,
         }
-
         // show menu text
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding - 40, 'EGG PATROL', menuConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2, 'Use mouse to move\nand click to fire.\nBeware of bats!', menuConfig).setOrigin(0.5);
-        menuConfig.backgroundColor = '#333333';
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'minecraft\nEGG PATROL', menuConfig).setOrigin(0.5);
+        menuConfig.fontSize = '24px';
+        this.add.text(game.config.width/2, game.config.height/2 + 80, 'Use mouse to move\nAnd click to fire.\nBewAre of bats!', menuConfig).setOrigin(0.5);
+        menuConfig.backgroundColor = '#555555';
         menuConfig.color = '#FFFFFF';
-        //this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 40, 'Press ← for Novice\nor → for Expert', menuConfig).setOrigin(0.5);
-        let normalButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 40, 'normal', menuConfig).setOrigin(0.5);
-        let hardButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 100, 'hard', menuConfig).setOrigin(0.5);
+        menuConfig.fontSize = '28px';
+        let normalButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 120, 'normAl', menuConfig).setOrigin(0.5);
+        let hardButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 180, 'hard', menuConfig).setOrigin(0.5);
         // add border
         this.add.sprite(0, 0, 'border').setOrigin(0, 0);
         // add egg
-        this.add.sprite(game.config.width/2, game.config.height/10, 'egg').setOrigin(0.5, 0);
+        this.add.sprite(game.config.width/2, game.config.height/9, 'egg').setOrigin(0.5, 0);
 
         // normal difficulty button
         normalButton.setInteractive();
@@ -75,8 +80,8 @@ class Menu extends Phaser.Scene {
         });
 
         // define keys
-        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        // keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+        // keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
     }
     update() {
         // if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {

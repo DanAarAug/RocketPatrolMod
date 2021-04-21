@@ -4,7 +4,7 @@ class Rabbit extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture, frame);
         scene.add.existing(this);   //add to existing scene
         this.points = pointValue;   //store pointValue
-        this.moveSpeed = game.settings.entitySpeed * 1.2;  //pixels per frame
+        this.moveSpeed = game.settings.entitySpeed * 0.8;  //pixels per frame
         this.facingLeft = false;
         this.flipX = true;
         this.anims.create({

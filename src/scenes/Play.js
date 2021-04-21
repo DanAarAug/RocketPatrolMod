@@ -27,12 +27,16 @@ class Play extends Phaser.Scene {
         // this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
         // this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
         this.eggScale = 0.4;
+        this.eggCanThrow = false;
         // set entity variables
         this.beeScale = 0.35;
         this.beePoints = 30;
 
         this.batScale = 0.3;
         this.batPoints = -10;
+        if (game.settings.bats == 3) {
+            this.batPoints = -15;
+        }
 
         this.codScale = 0.2;
         this.codPoints = 20;
@@ -91,10 +95,10 @@ class Play extends Phaser.Scene {
         this.p1Egg = new Egg(this, game.config.width/2, game.config.height - borderUISize - 5, 'egg').setOrigin(0.5, 0).setScale(this.eggScale);
         
         // define keys
-        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
-        keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
-        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        // keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        // keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        // keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+        // keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
         //pointer down input
         this.input.on('pointerdown', function (pointer) {
@@ -171,20 +175,28 @@ class Play extends Phaser.Scene {
     update(time, delta) {
         //this.rect1.x = this.bee01.x;
         // check key input for restart
-        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
-            this.sound.play('sfx_MC_select');
-            this.scene.restart();
-        }
-        // check key input for menu
-        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-            this.sound.play('sfx_MC_select');
-            this.scene.start("menuScene");
-        }
+        // if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
+        //     this.sound.play('sfx_MC_select');
+        //     this.scene.restart();
+        // }
+        // // check key input for menu
+        // if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+        //     this.sound.play('sfx_MC_select');
+        //     this.scene.start("menuScene");
+        // }
 
         //this.starfield.tilePositionX -= starSpeed;
 
-        if (!this.gameOver) {               
-            this.p1Egg.update();    // update egg sprite
+        if (!this.gameOver) {
+            // add delay before egg is interactable to avoid misfires
+            if(!this.eggCanThrow) {
+                this.time.delayedCall(100, () => {            
+                    this.p1Egg.update();    // update egg sprite
+                }, null, this);
+            }
+            else {
+                this.p1Egg.update();    // update egg sprite
+            }
 
             this.bee01.update(time, delta);    // update bee
             this.bat01.update();    // update bats
@@ -245,7 +257,7 @@ class Play extends Phaser.Scene {
             y : entity.y + entity.height*scale / 2,
             speed: { min: 0, max: 80 },
             angle: { min: 0, max: 360 },
-            scale: { start: 2, end: 0 },
+            scale: { start: 3, end: 0 },
             blendMode: 'SCREEN',
             lifespan: 500,
             gravityY: 0
@@ -255,24 +267,28 @@ class Play extends Phaser.Scene {
             entity.reset();                   // reset entity position
             entity.alpha = 1;                 // make entity visible again
         });
+        // text config for scoring points
         let goodTextConfig = {
             fontFamily: 'minecraft1',
             fontSize: '24px',
             color: '#00FF00',
             align: 'center',
         }
+        // text config for subtracting points
         let badTextConfig = {
             fontFamily: 'minecraft1',
             fontSize: '24px',
             color: '#FF0000',
             align: 'center',
         }
+        // + points text
         if(points > 0) {
             let scoreUp = this.add.text(entity.x + entity.width*scale / 2, entity.y + entity.height*scale / 2 + 20, '+' + points, goodTextConfig).setOrigin(0.5);
             this.time.delayedCall(500, () => {
                 scoreUp.destroy();
             });
         }
+        // - points text
         if(points < 0) {
             let scoreDown = this.add.text(entity.x + entity.width*scale / 2, entity.y + entity.height*scale / 2 + 20, points, badTextConfig).setOrigin(0.5);
             this.time.delayedCall(500, () => {
@@ -288,7 +304,7 @@ class Play extends Phaser.Scene {
         //   entity.alpha = 1;                       // make entity visible again
         //   boom.destroy();                       // remove anim sprite
         // });
-        entity.reset();                         // reset entity position
+        entity.reset();                         // extra reset entity position to ensure it cant be immediately hit again
         // score add and repaint
         this.p1Score += entity.points;
         this.scoreLeft.text = this.p1Score;
