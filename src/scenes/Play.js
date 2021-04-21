@@ -5,10 +5,10 @@ class Play extends Phaser.Scene {
 
     preload() {
         // load images/tile sprites
-        // load egg
-        this.load.image('egg', './assets/egg.png');
         // load custom minecraft background
         this.load.image('background', './assets/EggPatrolBG1.png');
+        // load particle
+        this.load.image('egg_particle', './assets/eggParticle.png');
         // load spritesheets
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
         this.load.spritesheet('bee', './assets/minecraftBee.png', {frameWidth: 150, frameHeight: 150, startFrame: 0, endFrame: 59});
@@ -27,28 +27,34 @@ class Play extends Phaser.Scene {
         // this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
         // this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
         // this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
-
-        // set scale for sprites
-        this.beeScale = 0.4;
         this.eggScale = 0.4;
+        // set entity variables
+        this.beeScale = 0.35;
+        this.beePoints = 30;
+
         this.batScale = 0.3;
+        this.batPoints = -10;
+
         this.codScale = 0.2;
-        this.rabbitScale = 0.3;
+        this.codPoints = 20;
+
+        this.rabbitScale = 0.28;
+        this.rabbitPoints = 50;
         // custom minecraft background
-        this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
+        this.add.sprite(0, 0, 'background').setOrigin(0, 0);
 
         // add bee
-        this.bee01 = new Bee(this, game.config.width + 20, borderUISize * 3.5, 'bee', 0, 30).setOrigin(0, 0).setScale(this.beeScale);
+        this.bee01 = new Bee(this, game.config.width + 20, borderUISize * 3.7, 'bee', 0, this.beePoints).setOrigin(0, 0).setScale(this.beeScale);
         // add bats
-        this.bat01 = new Bat(this, game.config.width + 20, borderUISize * 11, 'bat', 0, -5).setOrigin(0, 0).setScale(this.batScale);
-        this.bat02 = new Bat(this, 20, borderUISize * 11, 'bat', 0, -5).setOrigin(0, 0).setScale(this.batScale);
+        this.bat01 = new Bat(this, game.config.width + 20, borderUISize * 11, 'bat', 0, this.batPoints).setOrigin(0, 0).setScale(this.batScale);
+        this.bat02 = new Bat(this, 20, borderUISize * 11, 'bat', 0, this.batPoints).setOrigin(0, 0).setScale(this.batScale);
         if (game.settings.bats == 3) {
-            this.bat03 = new Bat(this, game.config.width/2, borderUISize * 11, 'bat', 0, -5).setOrigin(0, 0).setScale(this.batScale);
+            this.bat03 = new Bat(this, game.config.width/2, borderUISize * 11, 'bat', 0, this.batPoints).setOrigin(0, 0).setScale(this.batScale);
         }
         //add cod
-        this.cod01 = new Cod(this, game.config.width - 20, borderUISize * 7, 'cod', 0, 20).setOrigin(0, 0).setScale(this.codScale);
+        this.cod01 = new Cod(this, game.config.width - 20, borderUISize * 7, 'cod', 0, this.codPoints).setOrigin(0, 0).setScale(this.codScale);
         //add rabbit
-        this.rabbit01 = new Rabbit(this, 1, borderUISize * 5, 'rabbit', 0, 50).setOrigin(0, 0).setScale(this.rabbitScale);
+        this.rabbit01 = new Rabbit(this, 1, borderUISize * 5, 'rabbit', 0, this.rabbitPoints).setOrigin(0, 0).setScale(this.rabbitScale);
         // bee bounds debug
         // let bee01bounds = this.bee01.getBounds();
         // this.rect1 = this.add.rectangle(bee01bounds.x, bee01bounds.y, bee01bounds.width, bee01bounds.height, 0xFF0000).setOrigin(0, 0);
@@ -57,7 +63,7 @@ class Play extends Phaser.Scene {
         // this.rect1.setStrokeStyle(2, 0xFF0000, 1);
 
         //add bg border
-        this.add.tileSprite(0, 0, game.config.width, game.config.height, 'border').setOrigin(0, 0);
+        this.add.sprite(0, 0, 'border').setOrigin(0, 0);
 
         // add egg (player 1)
         this.p1Egg = new Egg(this, game.config.width/2, game.config.height - borderUISize - 5, 'egg').setOrigin(0.5, 0).setScale(this.eggScale);
@@ -163,32 +169,32 @@ class Play extends Phaser.Scene {
         //check bee collisions
         if (this.checkCollision(this.p1Egg, this.bee01, this.beeScale)) {
             this.p1Egg.reset();
-            this.entityExplode(this.bee01, 'explosion', 'explode', 'sfx_bee_death');
+            this.entityExplode(this.bee01, this.beeScale, this.beePoints, 'explosion', 'explode', 'sfx_bee_death');
         }
         //check bat collisions
         if (this.checkCollision(this.p1Egg, this.bat01, this.batScale)) {
             this.p1Egg.reset();
-            this.entityExplode(this.bat01, 'explosion', 'explode', 'sfx_bat_death');
+            this.entityExplode(this.bat01, this.batScale, this.batPoints, 'explosion', 'explode', 'sfx_bat_death');
         }
         if (this.checkCollision(this.p1Egg, this.bat02, this.batScale)) {
             this.p1Egg.reset();
-            this.entityExplode(this.bat02, 'explosion', 'explode', 'sfx_bat_death');
+            this.entityExplode(this.bat02, this.batScale, this.batPoints, 'explosion', 'explode', 'sfx_bat_death');
         }
         if (game.settings.bats == 3) {
             if (this.checkCollision(this.p1Egg, this.bat03, this.batScale)) {
                 this.p1Egg.reset();
-                this.entityExplode(this.bat03, 'explosion', 'explode', 'sfx_bat_death');
+                this.entityExplode(this.bat03, this.batScale, this.batPoints, 'explosion', 'explode', 'sfx_bat_death');
             }
         }
         //check cod collisions
         if (this.checkCollision(this.p1Egg, this.cod01, this.codScale)) {
             this.p1Egg.reset();
-            this.entityExplode(this.cod01, 'explosion', 'explode', 'sfx_cod_death');
+            this.entityExplode(this.cod01, this.codScale, this.codPoints, 'explosion', 'explode', 'sfx_cod_death');
         }
         //check rabbit collisions
         if (this.checkCollision(this.p1Egg, this.rabbit01, this.rabbitScale)) {
             this.p1Egg.reset();
-            this.entityExplode(this.rabbit01, 'explosion', 'explode', 'sfx_rabbit_death');
+            this.entityExplode(this.rabbit01, this.rabbitScale, this.rabbitPoints, 'explosion', 'explode', 'sfx_rabbit_death');
         }
     }
     checkCollision(egg, entity, scale) {
@@ -199,17 +205,60 @@ class Play extends Phaser.Scene {
         }
     }
 
-      entityExplode(entity, animSpritesheet, animKey, sfx) {
+      entityExplode(entity, scale, points, animSpritesheet, animKey, sfx) {
         //temporarily hide entity
         entity.alpha = 0;
-        // create anim sprite at entity's position
-        let boom = this.add.sprite(entity.x, entity.y, animSpritesheet).setOrigin(0, 0);
-        boom.anims.play(animKey);             // play animation
-        boom.on('animationcomplete', () => {    // callback after anim completes
-          entity.reset();                         // reset entity position
-          entity.alpha = 1;                       // make entity visible again
-          boom.destroy();                       // remove anim sprite
+
+        // simple particle emitter on entity death
+        let particles = this.add.particles('egg_particle');
+        particles.createEmitter({
+            x : entity.x + entity.width*scale / 2,
+            y : entity.y + entity.height*scale / 2,
+            speed: { min: 0, max: 80 },
+            angle: { min: 0, max: 360 },
+            scale: { start: 1, end: 0 },
+            blendMode: 'SCREEN',
+            lifespan: 500,
+            gravityY: 0
         });
+        this.time.delayedCall(500, () => {
+            particles.destroy();
+            entity.reset();                   // reset entity position
+            entity.alpha = 1;                 // make entity visible again
+        });
+        let goodTextConfig = {
+            fontFamily: 'minecraft1',
+            fontSize: '24px',
+            color: '#FFFFFF',
+            align: 'center',
+        }
+        let badTextConfig = {
+            fontFamily: 'minecraft1',
+            fontSize: '24px',
+            color: '#FF0000',
+            align: 'center',
+        }
+        if(points > 0) {
+            let scoreUp = this.add.text(entity.x + entity.width*scale / 2, entity.y + entity.height*scale / 2 + 20, '+' + points, goodTextConfig).setOrigin(0.5);
+            this.time.delayedCall(500, () => {
+                scoreUp.destroy();
+            });
+        }
+        if(points < 0) {
+            let scoreDown = this.add.text(entity.x + entity.width*scale / 2, entity.y + entity.height*scale / 2 + 20, points, badTextConfig).setOrigin(0.5);
+            this.time.delayedCall(500, () => {
+                scoreDown.destroy();
+            });
+        }
+
+        // create anim sprite at entity's position
+        // let boom = this.add.sprite(entity.x, entity.y, animSpritesheet).setOrigin(0, 0);
+        // boom.anims.play(animKey);             // play animation
+        // boom.on('animationcomplete', () => {    // callback after anim completes
+        //   entity.reset();                         // reset entity position
+        //   entity.alpha = 1;                       // make entity visible again
+        //   boom.destroy();                       // remove anim sprite
+        // });
         entity.reset();                         // reset entity position
         // score add and repaint
         this.p1Score += entity.points;

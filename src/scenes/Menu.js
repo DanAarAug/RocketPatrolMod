@@ -14,6 +14,8 @@ class Menu extends Phaser.Scene {
 
         // load UI images
         this.load.image('border', './assets/EggPatrolBorder.png');
+        // load egg
+        this.load.image('egg', './assets/egg.png');
 
         // load minecraft font
         loadFont("minecraft1", "./assets/Minecrafter.Reg.ttf");
@@ -36,11 +38,15 @@ class Menu extends Phaser.Scene {
 
         // show menu text
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding - 40, 'EGG PATROL', menuConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2, 'Use mouse to move\nand click to fire', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2, 'Use mouse to move\nand click to fire.\nBeware of bats!', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#333333';
         menuConfig.color = '#FFFFFF';
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 40, 'Press ← for Novice\nor → for Expert', menuConfig).setOrigin(0.5);
-        this.add.tileSprite(0, 0, game.config.width, game.config.height, 'border').setOrigin(0, 0);
+        // add border
+        this.add.sprite(0, 0, 'border').setOrigin(0, 0);
+        // add egg
+        this.add.sprite(game.config.width/2, game.config.height/10, 'egg').setOrigin(0.5, 0);
+
         // define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);

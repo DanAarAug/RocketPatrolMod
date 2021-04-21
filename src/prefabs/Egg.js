@@ -29,7 +29,7 @@ class Egg extends Phaser.GameObjects.Sprite {
             this.sfxEggThrow.play();  // play sfx
         }
         // mouse left/right movement
-        if(!this.isFiring && mouseX >= this.width*0.1 && mouseX <= game.config.width - this.width*0.11) {
+        if(!this.isFiring && mouseX >= this.width * 0.5 && mouseX <= game.config.width - this.width * 0.5) {
             this.x = mouseX;
         }
     }

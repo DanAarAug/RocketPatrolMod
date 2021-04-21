@@ -17,10 +17,10 @@ class Bee extends Phaser.GameObjects.Sprite {
 
     update() {
         // move Bee left
-        if(this.x > 200 && this.facingLeft) {
+        if(this.x > 190 && this.facingLeft) {
             this.x -= this.moveSpeed;
         }
-        else if (this.x <= 200 || !this.facingLeft) {
+        else if (this.x <= 190 || !this.facingLeft) {
             this.flipX = true;
             this.facingLeft = false;
             this.x += this.moveSpeed;
