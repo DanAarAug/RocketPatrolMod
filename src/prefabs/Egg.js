@@ -36,6 +36,6 @@ class Egg extends Phaser.GameObjects.Sprite {
     reset() {
         this.sfxEggPop.play();  // play sfx
         this.isFiring = false;
-        this.y = game.config.height - borderUISize - borderPadding;
+        this.y = game.config.height - borderUISize;
     }
 }

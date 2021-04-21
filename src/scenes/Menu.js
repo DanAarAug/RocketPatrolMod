@@ -6,8 +6,12 @@ class Menu extends Phaser.Scene {
         // load audio
         this.load.audio('sfx_MC_select', './assets/mc_select.wav');
         this.load.audio('sfx_egg_throw', './assets/egg_throw.wav');
-        this.load.audio('sfx_bee_death', './assets/bee_death.wav');
         this.load.audio('sfx_egg_pop', './assets/egg_pop.wav');
+        this.load.audio('sfx_bee_death', './assets/bee_death.wav');
+        this.load.audio('sfx_bat_death', './assets/bat_death.wav');
+        this.load.audio('sfx_cod_death', './assets/cod_death.wav');
+        this.load.audio('sfx_rabbit_death', './assets/rabbit_death.wav');
+
 
         // load minecraft font
         loadFont("minecraft1", "./assets/Minecrafter.Reg.ttf");
@@ -42,7 +46,7 @@ class Menu extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
           // easy mode
           game.settings = {
-            spaceshipSpeed: 3,
+            entitySpeed: 2,
             gameTimer: 60000    
           }
           this.sound.play('sfx_MC_select');
@@ -51,7 +55,7 @@ class Menu extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
           // hard mode
           game.settings = {
-            spaceshipSpeed: 4,
+            entitySpeed: 4,
             gameTimer: 45000    
           }
           this.sound.play('sfx_MC_select');

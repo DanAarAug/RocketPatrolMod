@@ -1,26 +1,26 @@
-// Bee prefab
-class Bee extends Phaser.GameObjects.Sprite {
+// Cod prefab
+class Cod extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame, pointValue) {
         super(scene, x, y, texture, frame);
         scene.add.existing(this);   //add to existing scene
         this.points = pointValue;   //store pointValue
-        this.moveSpeed = game.settings.entitySpeed;  //pixels per frame
+        this.moveSpeed = game.settings.entitySpeed * 0.4;  //pixels per frame
         this.facingLeft = true;
         this.anims.create({
-            key: 'beeFly',
-            frames: this.anims.generateFrameNumbers('bee', { start: 0, end: 59, first: 0}),
+            key: 'codSwim',
+            frames: this.anims.generateFrameNumbers('cod', { start: 0, end: 11, first: 0}),
             frameRate: 60,
             repeat: -1
         });
-        this.anims.play('beeFly');
+        this.anims.play('codSwim');
     }
 
     update() {
-        // move Bee left
-        if(this.x > 200 && this.facingLeft) {
+        // move Cod left
+        if(this.x > 280 && this.facingLeft) {
             this.x -= this.moveSpeed;
         }
-        else if (this.x <= 200 || !this.facingLeft) {
+        else if (this.x <= 280 || !this.facingLeft) {
             this.flipX = true;
             this.facingLeft = false;
             this.x += this.moveSpeed;

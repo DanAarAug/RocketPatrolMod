@@ -8,8 +8,8 @@ Points breakdown:
     Mouse control for player movement and mouse click to fire (20)
 *
 Sources citation:
-Personal help from: Colin O'Rourke (csorourk@ucsc.edu)
-Minecraft animation assets: https://minecraft.fandom.com/wiki/Animation
+Personal help with debugging from: Colin O'Rourke (csorourk@ucsc.edu)
+Minecraft assets (other than custom background): https://minecraft.fandom.com/wiki/
 Minecraft font: https://www.dafont.com/minecrafter.font - - - loader solution from https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3
 */
 
@@ -26,7 +26,6 @@ let game = new Phaser.Game(config);
 // set UI sizes
 let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
-let starSpeed = 4;
 
 // reserve keyboard bindings
 let keyF, keyR, keyLEFT, keyRIGHT;
