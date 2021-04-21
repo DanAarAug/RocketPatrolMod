@@ -15,15 +15,27 @@ class Bat extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-        // move bat left
-        this.x -= this.moveSpeed;
-        // wrap around from left to right edge
-        if(this.x <= 0 - this.width) {
-            this.reset();
+        // move bat
+        if(this.x > -100 && this.facingLeft) {
+            this.x -= this.moveSpeed;
+        }
+        else if (this.x <= -100 || !this.facingLeft) {
+            this.flipX = true;
+            this.facingLeft = false;
+            this.x += this.moveSpeed;
+            if(this.x > 500) {
+                this.facingLeft = true;
+                this.flipX = false;
+                this.reset();
+            }
         }
     }
     // position reset
     reset() {
-        this.x = game.config.width;
+        if(Math.random() < 0.50) {
+            this.x = game.config.width;
+        } else {
+            this.x = -100;
+        }
     }
 }

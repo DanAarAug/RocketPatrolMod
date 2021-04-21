@@ -37,13 +37,14 @@ class Play extends Phaser.Scene {
         // custom minecraft background
         this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
 
-        // add egg (player 1)
-        this.p1Egg = new Egg(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'egg').setOrigin(0.5, 0).setScale(this.eggScale);
-
         // add bee
         this.bee01 = new Bee(this, game.config.width + 20, borderUISize * 3.5, 'bee', 0, 30).setOrigin(0, 0).setScale(this.beeScale);
-        // add bat
+        // add bats
         this.bat01 = new Bat(this, game.config.width + 20, borderUISize * 11, 'bat', 0, -5).setOrigin(0, 0).setScale(this.batScale);
+        this.bat02 = new Bat(this, 20, borderUISize * 11, 'bat', 0, -5).setOrigin(0, 0).setScale(this.batScale);
+        if (game.settings.bats == 3) {
+            this.bat03 = new Bat(this, game.config.width/2, borderUISize * 11, 'bat', 0, -5).setOrigin(0, 0).setScale(this.batScale);
+        }
         //add cod
         this.cod01 = new Cod(this, game.config.width - 20, borderUISize * 7, 'cod', 0, 20).setOrigin(0, 0).setScale(this.codScale);
         //add rabbit
@@ -54,6 +55,12 @@ class Play extends Phaser.Scene {
         // this.rect1.isFilled = false;
         // this.rect1.isStroked = true;
         // this.rect1.setStrokeStyle(2, 0xFF0000, 1);
+
+        //add bg border
+        this.add.tileSprite(0, 0, game.config.width, game.config.height, 'border').setOrigin(0, 0);
+
+        // add egg (player 1)
+        this.p1Egg = new Egg(this, game.config.width/2, game.config.height - borderUISize - 5, 'egg').setOrigin(0.5, 0).setScale(this.eggScale);
         
         // define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -145,7 +152,11 @@ class Play extends Phaser.Scene {
             this.p1Egg.update();    // update egg sprite
 
             this.bee01.update();    // update bee
-            this.bat01.update();    // update bat
+            this.bat01.update();    // update bats
+            this.bat02.update();
+            if (game.settings.bats == 3) {
+                this.bat03.update();
+            }
             this.cod01.update();    // update cod
             this.rabbit01.update();    // update rabbit
         } 
@@ -158,6 +169,16 @@ class Play extends Phaser.Scene {
         if (this.checkCollision(this.p1Egg, this.bat01, this.batScale)) {
             this.p1Egg.reset();
             this.entityExplode(this.bat01, 'explosion', 'explode', 'sfx_bat_death');
+        }
+        if (this.checkCollision(this.p1Egg, this.bat02, this.batScale)) {
+            this.p1Egg.reset();
+            this.entityExplode(this.bat02, 'explosion', 'explode', 'sfx_bat_death');
+        }
+        if (game.settings.bats == 3) {
+            if (this.checkCollision(this.p1Egg, this.bat03, this.batScale)) {
+                this.p1Egg.reset();
+                this.entityExplode(this.bat03, 'explosion', 'explode', 'sfx_bat_death');
+            }
         }
         //check cod collisions
         if (this.checkCollision(this.p1Egg, this.cod01, this.codScale)) {

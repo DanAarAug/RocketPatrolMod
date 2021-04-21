@@ -12,6 +12,8 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_cod_death', './assets/cod_death.wav');
         this.load.audio('sfx_rabbit_death', './assets/rabbit_death.wav');
 
+        // load UI images
+        this.load.image('border', './assets/EggPatrolBorder.png');
 
         // load minecraft font
         loadFont("minecraft1", "./assets/Minecrafter.Reg.ttf");
@@ -38,6 +40,7 @@ class Menu extends Phaser.Scene {
         menuConfig.backgroundColor = '#333333';
         menuConfig.color = '#FFFFFF';
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 40, 'Press ← for Novice\nor → for Expert', menuConfig).setOrigin(0.5);
+        this.add.tileSprite(0, 0, game.config.width, game.config.height, 'border').setOrigin(0, 0);
         // define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -47,7 +50,8 @@ class Menu extends Phaser.Scene {
           // easy mode
           game.settings = {
             entitySpeed: 2,
-            gameTimer: 60000    
+            gameTimer: 60000,
+            bats: 2    
           }
           this.sound.play('sfx_MC_select');
           this.scene.start('playScene');    
@@ -56,7 +60,8 @@ class Menu extends Phaser.Scene {
           // hard mode
           game.settings = {
             entitySpeed: 4,
-            gameTimer: 45000    
+            gameTimer: 45000,    
+            bats: 3
           }
           this.sound.play('sfx_MC_select');
           this.scene.start('playScene');    
