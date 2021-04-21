@@ -11,6 +11,7 @@ class Play extends Phaser.Scene {
         this.load.image('egg_particle', './assets/eggParticle.png');
         // load spritesheets
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+        this.load.spritesheet('water', './assets/water.png', {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 31});
         this.load.spritesheet('bee', './assets/minecraftBee.png', {frameWidth: 150, frameHeight: 150, startFrame: 0, endFrame: 59});
         this.load.spritesheet('bat', './assets/bat.png', {frameWidth: 224, frameHeight: 281, startFrame: 0, endFrame: 150});
         this.load.spritesheet('cod', './assets/codAnim.png', {frameWidth: 300, frameHeight: 228, startFrame: 0, endFrame: 11});
@@ -18,8 +19,6 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        // place starfield
-
         // // green UI background
         // this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
         // // white borders
@@ -40,9 +39,29 @@ class Play extends Phaser.Scene {
 
         this.rabbitScale = 0.28;
         this.rabbitPoints = 50;
+
+        // moving water
+        // row 1
+        this.watertile01 = new WaterTile(this, 256, 288, 'water', 0).setOrigin(0, 0);
+        this.watertile02 = new WaterTile(this, 288, 288, 'water', 0).setOrigin(0, 0);
+        this.watertile03 = new WaterTile(this, 320, 288, 'water', 0).setOrigin(0, 0);
+        this.watertile04 = new WaterTile(this, 352, 288, 'water', 0).setOrigin(0, 0);
+        this.watertile05 = new WaterTile(this, 384, 288, 'water', 0).setOrigin(0, 0);
+        this.watertile06 = new WaterTile(this, 416, 288, 'water', 0).setOrigin(0, 0);
+        // row 2
+        this.watertile07 = new WaterTile(this, 288, 320, 'water', 0).setOrigin(0, 0);
+        this.watertile08 = new WaterTile(this, 320, 320, 'water', 0).setOrigin(0, 0);
+        this.watertile09 = new WaterTile(this, 352, 320, 'water', 0).setOrigin(0, 0);
+        this.watertile10 = new WaterTile(this, 384, 320, 'water', 0).setOrigin(0, 0);
+        this.watertile11 = new WaterTile(this, 416, 320, 'water', 0).setOrigin(0, 0);
+        // row 3
+        this.watertile12 = new WaterTile(this, 320, 352, 'water', 0).setOrigin(0, 0);
+        this.watertile13 = new WaterTile(this, 352, 352, 'water', 0).setOrigin(0, 0);
+        this.watertile14 = new WaterTile(this, 384, 352, 'water', 0).setOrigin(0, 0);
+        this.watertile15 = new WaterTile(this, 416, 352, 'water', 0).setOrigin(0, 0);
         // custom minecraft background
         this.add.sprite(0, 0, 'background').setOrigin(0, 0);
-
+        
         // add bee
         this.bee01 = new Bee(this, game.config.width + 20, borderUISize * 3.7, 'bee', 0, this.beePoints).setOrigin(0, 0).setScale(this.beeScale);
         // add bats
