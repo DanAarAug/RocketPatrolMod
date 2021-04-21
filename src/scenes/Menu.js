@@ -11,6 +11,8 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_bat_death', './assets/bat_death.wav');
         this.load.audio('sfx_cod_death', './assets/cod_death.wav');
         this.load.audio('sfx_rabbit_death', './assets/rabbit_death.wav');
+        this.load.audio('sfx_chicken_squawk', './assets/chicken_squawk.wav');
+        this.load.audio('sfx_chicken_death', './assets/chicken_death.wav');
 
         // load UI images
         this.load.image('blueBackground', './assets/EggPatrolMenuBG.png');

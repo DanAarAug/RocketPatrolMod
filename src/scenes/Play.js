@@ -247,7 +247,7 @@ class Play extends Phaser.Scene {
         if(this.chickenExists) {
             if (this.checkCollision(this.p1Egg, this.chicken01, this.chickenScale)) {
                 this.p1Egg.reset();
-                this.entityExplode(this.chicken01, this.chickenScale, this.chickenPoints, 'explosion', 'explode', 'sfx_rabbit_death');
+                this.entityExplode(this.chicken01, this.chickenScale, this.chickenPoints, 'explosion', 'explode', 'sfx_chicken_death');
                 this.chicken01.destroy();
                 this.chickenExists = false;
             }
@@ -313,6 +313,7 @@ class Play extends Phaser.Scene {
         if(Math.random() < 0.10 && entity != this.chicken01 && entity != this.bat01 && entity != this.bat02 && entity != this.bat03) {
             this.chicken01 = new Chicken(this, entity.x + entity.width*scale / 2, entity.y + entity.height*scale / 2, 'chicken', 0, this.chickenPoints).setOrigin(0, 0).setScale(this.chickenScale);
             this.chickenExists = true;
+            this.sound.play('sfx_chicken_squawk');
         }
 
         // create anim sprite at entity's position

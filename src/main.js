@@ -10,6 +10,7 @@ Points breakdown:
     Create a new spaceship type (w/ new artwork) that's smaller, moves faster, and is worth more points (20)
     Create and implement a new weapon (w/ new behavior and graphics) (20)
     Redesign the game's artwork, UI, and sound to change its theme/aesthetic (to something other than sci-fi) (60)
+    Total: 140
 *
 Sources citation:
     Personal help with debugging from Colin O'Rourke (csorourk@ucsc.edu)
