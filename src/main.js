@@ -2,7 +2,7 @@
 Name: Daniel Aughenbaugh (daughenb@ucsc.edu)
 Project Title: Minecraft Egg Patrol
 Date: 4-21-21
-Time to complete: 20+ hours
+Time to complete: 25+ hours
 *
 Points breakdown:
     Mouse control for player movement and mouse click to fire (20)

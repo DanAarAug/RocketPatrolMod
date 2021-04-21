@@ -16,7 +16,7 @@ class Cod extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-        // move Cod left
+        // cod movement
         if(this.x > 280 && this.facingLeft) {
             this.x -= this.moveSpeed;
         }

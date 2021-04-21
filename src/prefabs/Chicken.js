@@ -19,7 +19,7 @@ class Chicken extends Phaser.GameObjects.Sprite {
     }
     
     update() {
-        // move Chicken down
+        // chicken movement
         this.y += this.moveSpeed;
         this.x += this.xAngle;
         if(this.y > game.config.height) {

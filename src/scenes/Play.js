@@ -47,6 +47,7 @@ class Play extends Phaser.Scene {
 
         this.chickenScale = 0.2;
         this.chickenPoints = 100;
+        this.chickenExists = false;
 
         // moving water
         // row 1
@@ -310,7 +311,7 @@ class Play extends Phaser.Scene {
                 scoreDown.destroy();
             });
         }
-        if(Math.random() < 0.10 && entity != this.chicken01 && entity != this.bat01 && entity != this.bat02 && entity != this.bat03) {
+        if(Math.random() < 0.125 && !this.chickenExists && entity != this.chicken01 && entity != this.bat01 && entity != this.bat02 && entity != this.bat03) {
             this.chicken01 = new Chicken(this, entity.x + entity.width*scale / 2, entity.y + entity.height*scale / 2, 'chicken', 0, this.chickenPoints).setOrigin(0, 0).setScale(this.chickenScale);
             this.chickenExists = true;
             this.sound.play('sfx_chicken_squawk');

@@ -7,7 +7,7 @@ class Bee extends Phaser.GameObjects.Sprite {
         this.moveSpeed = -1*game.settings.entitySpeed;  //pixels per frame
         this.facingLeft = true;
         this.pollinating = 0;
-        this.pollTime = 500;
+        this.pollTime = 500;    //initial pollination time
         this.anims.create({
             key: 'beeFly',
             frames: this.anims.generateFrameNumbers('bee', { start: 0, end: 59, first: 0}),
@@ -32,6 +32,8 @@ class Bee extends Phaser.GameObjects.Sprite {
         //         this.reset();
         //     }
         // }
+
+        //bee pollinating behavior
         if(this.x <= 190 && this.pollinating <= this.pollTime){
             this.pollinating += delta;
         }

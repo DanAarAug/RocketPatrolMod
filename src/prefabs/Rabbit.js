@@ -17,7 +17,7 @@ class Rabbit extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-        // move rabbit
+        // rabbit movement
         if(this.x < 100 && !this.facingLeft) {
             this.x += this.moveSpeed;
         }

@@ -15,7 +15,7 @@ class Bat extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-        // move bat
+        // bat movement
         if(this.x > -100 && this.facingLeft) {
             this.x -= this.moveSpeed;
         }
@@ -32,6 +32,7 @@ class Bat extends Phaser.GameObjects.Sprite {
     }
     // position reset
     reset() {
+        // 50/50 bat respawns on left or right
         if(Math.random() < 0.50) {
             this.x = game.config.width;
         } else {
