@@ -7,6 +7,8 @@ Time to complete: 20+ hours
 Points breakdown:
     Mouse control for player movement and mouse click to fire (20)
     Use Phaser's particle emitter to create a particle explosion when the rocket hits the spaceship (20)
+    Create a new spaceship type (w/ new artwork) that's smaller, moves faster, and is worth more points (20)
+    Create and implement a new weapon (w/ new behavior and graphics) (20)
     Redesign the game's artwork, UI, and sound to change its theme/aesthetic (to something other than sci-fi) (60)
 *
 Sources citation:

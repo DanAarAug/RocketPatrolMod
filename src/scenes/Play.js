@@ -16,6 +16,7 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('bat', './assets/bat.png', {frameWidth: 224, frameHeight: 281, startFrame: 0, endFrame: 150});
         this.load.spritesheet('cod', './assets/codAnim.png', {frameWidth: 300, frameHeight: 228, startFrame: 0, endFrame: 11});
         this.load.spritesheet('rabbit', './assets/rabbit.png', {frameWidth: 230, frameHeight: 300, startFrame: 0, endFrame: 17});
+        this.load.spritesheet('chicken', './assets/chicken.png', {frameWidth: 300, frameHeight: 319, startFrame: 0, endFrame: 7});
     }
 
     create() {
@@ -43,6 +44,9 @@ class Play extends Phaser.Scene {
 
         this.rabbitScale = 0.28;
         this.rabbitPoints = 50;
+
+        this.chickenScale = 0.2;
+        this.chickenPoints = 100;
 
         // moving water
         // row 1
@@ -206,6 +210,9 @@ class Play extends Phaser.Scene {
             }
             this.cod01.update();    // update cod
             this.rabbit01.update();    // update rabbit
+            if(this.chickenExists) {    //update chicken if it exists
+                this.chicken01.update();
+            }
         } 
         //check bee collisions
         if (this.checkCollision(this.p1Egg, this.bee01, this.beeScale)) {
@@ -237,6 +244,14 @@ class Play extends Phaser.Scene {
             this.p1Egg.reset();
             this.entityExplode(this.rabbit01, this.rabbitScale, this.rabbitPoints, 'explosion', 'explode', 'sfx_rabbit_death');
         }
+        if(this.chickenExists) {
+            if (this.checkCollision(this.p1Egg, this.chicken01, this.chickenScale)) {
+                this.p1Egg.reset();
+                this.entityExplode(this.chicken01, this.chickenScale, this.chickenPoints, 'explosion', 'explode', 'sfx_rabbit_death');
+                this.chicken01.destroy();
+                this.chickenExists = false;
+            }
+        }
     }
     checkCollision(egg, entity, scale) {
         if(egg.x < entity.x + entity.width*scale && egg.x + egg.width*scale/2 > entity.x && egg.y < entity.y + entity.height*scale && egg.height*this.eggScale + egg.y > entity.y) {
@@ -246,7 +261,7 @@ class Play extends Phaser.Scene {
         }
     }
 
-      entityExplode(entity, scale, points, animSpritesheet, animKey, sfx) {
+    entityExplode(entity, scale, points, animSpritesheet, animKey, sfx) {
         //temporarily hide entity
         entity.alpha = 0;
 
@@ -294,6 +309,10 @@ class Play extends Phaser.Scene {
             this.time.delayedCall(500, () => {
                 scoreDown.destroy();
             });
+        }
+        if(Math.random() < 0.10 && entity != this.chicken01 && entity != this.bat01 && entity != this.bat02 && entity != this.bat03) {
+            this.chicken01 = new Chicken(this, entity.x + entity.width*scale / 2, entity.y + entity.height*scale / 2, 'chicken', 0, this.chickenPoints).setOrigin(0, 0).setScale(this.chickenScale);
+            this.chickenExists = true;
         }
 
         // create anim sprite at entity's position
