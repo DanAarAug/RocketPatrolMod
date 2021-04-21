@@ -141,7 +141,7 @@ class Play extends Phaser.Scene {
         let scoreConfig = {
             fontFamily: 'minecraft1',
             fontSize: '36px',
-            backgroundColor: '#555555',
+            backgroundColor: '#000000',
             color: '#FFFFFF',
             align: 'center',
             padding: {
@@ -160,6 +160,7 @@ class Play extends Phaser.Scene {
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
             // restart button
+            scoreConfig.backgroundColor = '#555555';
             let restartButton = this.add.text(game.config.width/2, game.config.height/2 + 64, 'RESTART', scoreConfig).setOrigin(0.5);
             restartButton.setInteractive();
             restartButton.on('pointerdown', () => {

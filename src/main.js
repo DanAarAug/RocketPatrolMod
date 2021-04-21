@@ -14,7 +14,7 @@ Points breakdown:
 *
 Sources citation:
     Personal help with debugging from Colin O'Rourke (csorourk@ucsc.edu)
-    Minecraft assets (other than custom background): https://minecraft.fandom.com/wiki/
+    Minecraft assets (other than custom made background): https://minecraft.fandom.com/wiki/
     Minecraft font: https://www.dafont.com/minecrafter.font - - font loader solution from https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3
 */
 
