@@ -5,12 +5,12 @@ class Play extends Phaser.Scene {
 
     preload() {
         // load images/tile sprites
-        // load custom minecraft background
+        // load custom minecraft backgrounds
         this.load.image('background', './assets/EggPatrolBG1.png');
+        this.load.image('backgroundNight', './assets/EggPatrolBGNight.png');
         // load particle
         this.load.image('egg_particle', './assets/eggParticle.png');
         // load spritesheets
-        this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
         this.load.spritesheet('water', './assets/water.png', {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 31});
         this.load.spritesheet('bee', './assets/minecraftBee.png', {frameWidth: 150, frameHeight: 150, startFrame: 0, endFrame: 59});
         this.load.spritesheet('bat', './assets/bat.png', {frameWidth: 224, frameHeight: 281, startFrame: 0, endFrame: 150});
@@ -61,6 +61,9 @@ class Play extends Phaser.Scene {
         this.watertile15 = new WaterTile(this, 416, 352, 'water', 0).setOrigin(0, 0);
         // custom minecraft background
         this.add.sprite(0, 0, 'background').setOrigin(0, 0);
+        if (game.settings.night) {
+            this.add.sprite(0, 0, 'backgroundNight').setOrigin(0, 0);
+        }
         
         // add bee
         this.bee01 = new Bee(this, game.config.width + 20, borderUISize * 3.7, 'bee', 0, this.beePoints).setOrigin(0, 0).setScale(this.beeScale);
@@ -112,12 +115,6 @@ class Play extends Phaser.Scene {
         }, this);
     
 
-        // animations config
-        this.anims.create({
-            key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9, first: 0}),
-            frameRate: 30
-        });
         // this.anims.create({
         //     key: 'beeFly',
         //     frames: this.anims.generateFrameNumbers('bee', { start: 0, end: 59, first: 0}),
@@ -153,12 +150,25 @@ class Play extends Phaser.Scene {
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart\nor ← for Menu', scoreConfig).setOrigin(0.5);
+            // restart button
+            let restartButton = this.add.text(game.config.width/2, game.config.height/2 + 64, 'RESTART', scoreConfig).setOrigin(0.5);
+            restartButton.setInteractive();
+            restartButton.on('pointerdown', () => {
+                this.sound.play('sfx_MC_select');
+                this.scene.restart(); 
+            });
+            // menu button
+            let menuButton = this.add.text(game.config.width/2, game.config.height/2 + 120, 'MENU', scoreConfig).setOrigin(0.5);
+            menuButton.setInteractive();
+            menuButton.on('pointerdown', () => {
+                this.sound.play('sfx_MC_select');
+                this.scene.start("menuScene");
+            });
             this.gameOver = true;
         }, null, this);
     }
 
-    update() {
+    update(time, delta) {
         //this.rect1.x = this.bee01.x;
         // check key input for restart
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
@@ -176,7 +186,7 @@ class Play extends Phaser.Scene {
         if (!this.gameOver) {               
             this.p1Egg.update();    // update egg sprite
 
-            this.bee01.update();    // update bee
+            this.bee01.update(time, delta);    // update bee
             this.bat01.update();    // update bats
             this.bat02.update();
             if (game.settings.bats == 3) {
@@ -235,7 +245,7 @@ class Play extends Phaser.Scene {
             y : entity.y + entity.height*scale / 2,
             speed: { min: 0, max: 80 },
             angle: { min: 0, max: 360 },
-            scale: { start: 1, end: 0 },
+            scale: { start: 2, end: 0 },
             blendMode: 'SCREEN',
             lifespan: 500,
             gravityY: 0
@@ -248,7 +258,7 @@ class Play extends Phaser.Scene {
         let goodTextConfig = {
             fontFamily: 'minecraft1',
             fontSize: '24px',
-            color: '#FFFFFF',
+            color: '#00FF00',
             align: 'center',
         }
         let badTextConfig = {

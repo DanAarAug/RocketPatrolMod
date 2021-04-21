@@ -41,36 +41,65 @@ class Menu extends Phaser.Scene {
         this.add.text(game.config.width/2, game.config.height/2, 'Use mouse to move\nand click to fire.\nBeware of bats!', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#333333';
         menuConfig.color = '#FFFFFF';
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 40, 'Press ← for Novice\nor → for Expert', menuConfig).setOrigin(0.5);
+        //this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 40, 'Press ← for Novice\nor → for Expert', menuConfig).setOrigin(0.5);
+        let normalButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 40, 'normal', menuConfig).setOrigin(0.5);
+        let hardButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 100, 'hard', menuConfig).setOrigin(0.5);
         // add border
         this.add.sprite(0, 0, 'border').setOrigin(0, 0);
         // add egg
         this.add.sprite(game.config.width/2, game.config.height/10, 'egg').setOrigin(0.5, 0);
+
+        // normal difficulty button
+        normalButton.setInteractive();
+        normalButton.on('pointerdown', () => {
+            game.settings = {
+            entitySpeed: 2,
+            gameTimer: 60000,
+            bats: 2,    
+            night: false
+          }
+          this.sound.play('sfx_MC_select');
+          this.scene.start('playScene');
+        });
+        // hard difficulty button
+        hardButton.setInteractive();
+        hardButton.on('pointerdown', () => {
+          game.settings = {
+            entitySpeed: 4,
+            gameTimer: 45000,    
+            bats: 3,
+            night: true
+          }
+          this.sound.play('sfx_MC_select');
+          this.scene.start('playScene'); 
+        });
 
         // define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
     }
     update() {
-        if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-          // easy mode
-          game.settings = {
-            entitySpeed: 2,
-            gameTimer: 60000,
-            bats: 2    
-          }
-          this.sound.play('sfx_MC_select');
-          this.scene.start('playScene');    
-        }
-        if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
-          // hard mode
-          game.settings = {
-            entitySpeed: 4,
-            gameTimer: 45000,    
-            bats: 3
-          }
-          this.sound.play('sfx_MC_select');
-          this.scene.start('playScene');    
-        }
+        // if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+        //   // easy mode
+        //   game.settings = {
+        //     entitySpeed: 2,
+        //     gameTimer: 60000,
+        //     bats: 2,    
+        //     night: false
+        //   }
+        //   this.sound.play('sfx_MC_select');
+        //   this.scene.start('playScene');    
+        // }
+        // if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
+        //   // hard mode
+        //   game.settings = {
+        //     entitySpeed: 4,
+        //     gameTimer: 45000,    
+        //     bats: 3,
+        //     night: true
+        //   }
+        //   this.sound.play('sfx_MC_select');
+        //   this.scene.start('playScene');    
+        // }
       }
 }
